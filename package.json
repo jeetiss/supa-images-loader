@@ -2,11 +2,13 @@
   "name": "supa-images-loader",
   "version": "0.0.1",
   "description": "image loader for browser",
-  "main": "index.js",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
   "scripts": {
     "lint": "xo",
     "lint:fix": "xo --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava --verbose",
+    "build": "rollup -c"
   },
   "keywords": [
     "images",
@@ -16,12 +18,27 @@
   "author": "Dmitry Ivakhnenko",
   "license": "MIT",
   "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.40",
+    "@babel/register": "^7.0.0-beta.40",
+    "ava": "^1.0.0-beta.3",
+    "rollup": "^0.56.3",
+    "sinon": "^4.4.2",
     "xo": "^0.20.3"
   },
+  "ava": {
+    "require": [
+      "@babel/register"
+    ]
+  },
   "xo": {
-    "envs": ["browser"],
     "space": true,
     "semicolon": false,
-    "prettier": true
+    "prettier": true,
+    "envs": [
+      "browser"
+    ],
+    "rules": {
+      "import/extensions": [2, "never", {"json": "always"}]
+    }
   }
 }

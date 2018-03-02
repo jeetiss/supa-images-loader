@@ -1,8 +1,4 @@
-const once = (node, event, callback) =>
-  node.addEventListener(event, function handler(e) {
-    node.removeEventListener(handler)
-    callback(e)
-  })
+import once from './helpers/once'
 
 const loadImageFromString = src =>
   new Promise((resolve, reject) => {
