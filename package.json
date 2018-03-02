@@ -1,0 +1,27 @@
+{
+  "name": "supa-images-loader",
+  "version": "0.0.1",
+  "description": "image loader for browser",
+  "main": "index.js",
+  "scripts": {
+    "lint": "xo",
+    "lint:fix": "xo --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "images",
+    "load",
+    "es2017"
+  ],
+  "author": "Dmitry Ivakhnenko",
+  "license": "MIT",
+  "devDependencies": {
+    "xo": "^0.20.3"
+  },
+  "xo": {
+    "envs": ["browser"],
+    "space": true,
+    "semicolon": false,
+    "prettier": true
+  }
+}
