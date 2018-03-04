@@ -19,18 +19,26 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.40",
+    "@babel/preset-flow": "^7.0.0-beta.40",
     "@babel/register": "^7.0.0-beta.40",
     "ava": "^1.0.0-beta.3",
+    "babel-eslint": "^8.2.2",
     "rollup": "^0.56.3",
+    "rollup-plugin-babel": "^4.0.0-beta.2",
     "sinon": "^4.4.2",
     "xo": "^0.20.3"
   },
   "ava": {
     "require": [
-      "@babel/register"
+      "@babel/register",
+      "./test/helpers/image"
     ]
   },
   "xo": {
+    "parser": "babel-eslint",
+    "ignores": [
+      "example"
+    ],
     "space": true,
     "semicolon": false,
     "prettier": true,
@@ -38,7 +46,13 @@
       "browser"
     ],
     "rules": {
-      "import/extensions": [2, "never", {"json": "always"}]
+      "import/extensions": [
+        2,
+        "never",
+        {
+          "json": "always"
+        }
+      ]
     }
   }
 }

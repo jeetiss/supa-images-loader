@@ -1,49 +1,21 @@
-import once from './helpers/once'
+// @flow
 
-const loadImageFromString = src =>
-  new Promise((resolve, reject) => {
-    const image = new Image()
-    image.src = src
+import load from './load'
 
-    once(image, 'load', () => resolve(image))
-    once(image, 'error', () => reject(image))
-  })
+type imageWithState = [HTMLImageElement, boolean]
 
-const loadImageFromElement = image =>
-  new Promise((resolve, reject) => {
-    if (!image.complete || !image.src) {
-      // Dont loaded
+function loadImages(
+  ...images: (string | HTMLImageElement)[]
+): Promise<imageWithState[]> {
+  const addStatus = (status: boolean) => (
+    image: HTMLImageElement
+  ): imageWithState => [image, status]
 
-      once(image, 'load', () => resolve(image))
-      once(image, 'error', () => reject(image))
-    } else if (image.naturalHeight !== 0 && image.naturalWidth !== 0) {
-      // Loaded normal
+  const success = addStatus(true)
+  const fail = addStatus(false)
 
-      resolve(image)
-    } else {
-      // Loaded with error
-
-      reject(image)
-    }
-  })
-
-const load = arg => {
-  if (typeof arg === 'string') {
-    return loadImageFromString(arg)
-  }
-  if (arg instanceof HTMLImageElement) {
-    return loadImageFromElement(arg)
-  }
-  return Promise.reject(arg)
-}
-
-function loadImages(...images) {
   return Promise.all(
-    images
-      .map(load)
-      .map(promise =>
-        promise.then(image => [image, true]).catch(image => [image, false])
-      )
+    images.map(load).map(promise => promise.then(success, fail))
   ).then(
     images =>
       images.some(([, loaded]) => !loaded)
