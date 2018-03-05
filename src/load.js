@@ -2,6 +2,8 @@
 
 import once from './once'
 
+export type ImageWithError = [HTMLImageElement, Error | null]
+
 const createImage = (src: string): HTMLImageElement => {
   const image = new Image()
   image.src = src
@@ -9,21 +11,23 @@ const createImage = (src: string): HTMLImageElement => {
   return image
 }
 
-export const loadImage = (
-  image: HTMLImageElement
-): Promise<HTMLImageElement> => {
+const loadImage = (image: HTMLImageElement): Promise<ImageWithError> => {
   if (image.src && typeof image.decode === 'function') {
-    return image.decode().then(() => image, () => Promise.reject(image))
+    return image.decode().then(() => [image, null], error => [image, error])
   }
 
-  return new Promise((resolve, reject) => {
-    once(image, 'load', () => resolve(image))
-    once(image, 'error', () => reject(image))
+  return new Promise(resolve => {
+    once(image, 'load', () => resolve([image, null]))
+    once(image, 'error', error => resolve([image, error]))
   })
 }
 
-const load = (arg: string | HTMLImageElement): Promise<HTMLImageElement> => {
+const load = (arg: string | HTMLImageElement): Promise<ImageWithError> => {
   const image = typeof arg === 'string' ? createImage(arg) : arg
+
+  if (!(image instanceof HTMLImageElement)) {
+    return Promise.reject(new Error('Wrong argument type: '))
+  }
 
   if (!image.complete || !image.src) {
     // Dont loaded
@@ -33,11 +37,11 @@ const load = (arg: string | HTMLImageElement): Promise<HTMLImageElement> => {
   if (image.naturalHeight !== 0 && image.naturalWidth !== 0) {
     // Loaded normal
 
-    return Promise.resolve(image)
+    return Promise.resolve([image, null])
   }
   // Loaded with error
 
-  return Promise.reject(image)
+  return Promise.resolve([image, new Error('wtf')])
 }
 
 export default load
