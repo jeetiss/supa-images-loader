@@ -4,6 +4,16 @@ import once from './once'
 
 export type ImageWithError = [HTMLImageElement, Error | null]
 
+const wrongArg = arg => {
+  const str = JSON.stringify(arg)
+
+  return new Error(
+    `Wrong argument: '${str}', use HTMLImageElement or string instead`
+  )
+}
+
+const wrongPath = img => new Error(`can't load image with src ${img.src}`)
+
 const createImage = (src: string): HTMLImageElement => {
   const image = new Image()
   image.src = src
@@ -18,7 +28,7 @@ const loadImage = (image: HTMLImageElement): Promise<ImageWithError> => {
 
   return new Promise(resolve => {
     once(image, 'load', () => resolve([image, null]))
-    once(image, 'error', error => resolve([image, error]))
+    once(image, 'error', _ => resolve([image, wrongPath(image)]))
   })
 }
 
@@ -26,7 +36,7 @@ const load = (arg: string | HTMLImageElement): Promise<ImageWithError> => {
   const image = typeof arg === 'string' ? createImage(arg) : arg
 
   if (!(image instanceof HTMLImageElement)) {
-    return Promise.reject(new Error('Wrong argument type: '))
+    return Promise.reject(wrongArg(arg))
   }
 
   if (!image.complete || !image.src) {
@@ -41,7 +51,7 @@ const load = (arg: string | HTMLImageElement): Promise<ImageWithError> => {
   }
   // Loaded with error
 
-  return Promise.resolve([image, new Error('wtf')])
+  return Promise.resolve([image, wrongPath(image)])
 }
 
 export default load
