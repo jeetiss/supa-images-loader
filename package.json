@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "xo",
     "lint:fix": "xo --fix",
-    "test": "ava --verbose",
+    "test": "BABEL_ENV=test ava --verbose",
     "build": "rollup -c"
   },
   "keywords": [

@@ -5,6 +5,8 @@ class Image extends EventEmitter {
     super()
 
     this.complete = true
+    this.naturalHeight = 0
+    this.naturalWidth = 0
   }
 
   addEventListener(...args) {
@@ -17,6 +19,7 @@ class Image extends EventEmitter {
 
   set src(value) {
     this.link = value
+    this.complete = false
     if (value === 'valid link') {
       this.loading()
     } else {
@@ -31,15 +34,23 @@ class Image extends EventEmitter {
   }
 
   loading() {
-    if (this.onload) this.unload()
+    setTimeout(() => {
+      this.complete = true
+      this.naturalHeight = 1
+      this.naturalWidth = 1
 
-    setTimeout(() => this.emit('load'))
+      if (this.onload) this.onload()
+      this.emit('load')
+    })
   }
 
   error() {
-    if (this.onerror) this.onerror()
-
-    setTimeout(() => this.emit('error'))
+    setTimeout(() => {
+      const error = new Error('error for test')
+      this.complete = true
+      if (this.onerror) this.onerror(error)
+      this.emit('error', error)
+    })
   }
 }
 
