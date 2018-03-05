@@ -1,10 +1,12 @@
 // @flow
 
-const once = (node: HTMLElement, event: string, callback: Function) => {
-  node.addEventListener(event, function handler(e) {
+const once = (node: HTMLImageElement, event: 'error'|'load', callback: EventHandler) => {
+  function handler(e: Event):void {
     node.removeEventListener(event, handler)
     callback(e)
-  })
+  }
+  
+  node.addEventListener(event, handler)
 }
 
 export default once
