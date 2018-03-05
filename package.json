@@ -8,7 +8,7 @@
     "lint": "xo",
     "lint:fix": "xo --fix",
     "test": "BABEL_ENV=test ava --verbose",
-    "build": "rollup -c"
+    "build": "BABEL_ENV=build rollup -c"
   },
   "keywords": [
     "images",
@@ -19,6 +19,7 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.40",
+    "@babel/preset-env": "^7.0.0-beta.40",
     "@babel/preset-flow": "^7.0.0-beta.40",
     "@babel/register": "^7.0.0-beta.40",
     "ava": "^1.0.0-beta.3",
@@ -38,6 +39,9 @@
     "parser": "babel-eslint",
     "ignores": [
       "example"
+    ],
+    "globals": [
+      "EventHandler"
     ],
     "space": true,
     "semicolon": false,

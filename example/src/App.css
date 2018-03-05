@@ -1,11 +1,12 @@
 .App {
-  text-align: center;
+  display: grid;
+  grid-template-columns: minmax(min-content, 900px);
+  justify-content: center;
 }
 
 .App-header {
-  background-color: #222;
+  color: #222;
   padding: 20px;
-  color: white;
 }
 
 .App-title {

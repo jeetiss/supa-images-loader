@@ -5,6 +5,12 @@
     "test": {
       "presets": ["@babel/preset-flow"],
       "plugins": ["@babel/plugin-transform-modules-commonjs"]
+    },
+
+    "build": {
+      "presets": [["@babel/preset-env", {
+        "modules": false
+      }]]
     }
   }
 }
