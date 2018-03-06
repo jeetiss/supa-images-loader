@@ -2,8 +2,8 @@
   "name": "supa-images-loader",
   "version": "0.0.1",
   "description": "image loader for browser",
+  "main": "dist/index.js",
   "module": "dist/index.es.js",
-  "jsnext:main": "dist/index.es.js",
   "scripts": {
     "lint": "xo",
     "lint:fix": "xo --fix",
