@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "description": "image loader for browser",
   "main": "dist/index.js",
-  "module": "dist/index.es.js",
+  "module": "dist/es/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "lint": "xo",
     "lint:fix": "xo --fix",
@@ -62,5 +65,8 @@
         }
       ]
     }
+  },
+  "dependencies": {
+    "rollup-plugin-uglify": "^3.0.0"
   }
 }
